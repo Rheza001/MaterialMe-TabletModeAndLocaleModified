@@ -23,6 +23,7 @@
                 android:padding="8dp"
                 android:textColor="@color/textColor"
                 style="@style/TextAppearance.AppCompat.Headline"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -30,11 +31,11 @@
                 android:text="@string/news_placeholder"
                 android:padding="8dp"
                 android:textColor="?android:textColorSecondary"
-                style="@style/TextAppearance.AppCompat.Subhead" />
+                style="@style/SportsDetailTitle" />
 
             <TextView
                 android:id="@+id/subTitleDetail"
-                style="@style/TextAppearance.AppCompat.Subhead"
+                style="@style/SportsDetailTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"

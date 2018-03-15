@@ -20,6 +20,7 @@ import android.content.ClipData;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -40,26 +41,35 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.activity_main);
 
-        //Initialize the RecyclerView
-        mRecyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+      int gridColumnCount = getResources().getInteger(R.integer.grid_column_count);
 
-        //Set the Layout Manager
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+      //Initialize the RecyclerView
+      mRecyclerView = (RecyclerView)findViewById(R.id.recyclerView);
 
-        //Initialize the ArrayLIst that will contain the data
-        mSportsData = new ArrayList<>();
+      //Set the Layout Manager
+      mRecyclerView.setLayoutManager(new GridLayoutManager(this, gridColumnCount));
 
-        //Initialize the adapter and set it ot the RecyclerView
-        mAdapter = new SportsAdapter(this, mSportsData);
-        mRecyclerView.setAdapter(mAdapter);
+      //Initialize the ArrayLIst that will contain the data
+      mSportsData = new ArrayList<>();
 
-        //Get the data
-        initializeData();
+      //Initialize the adapter and set it ot the RecyclerView
+      mAdapter = new SportsAdapter(this, mSportsData);
+      mRecyclerView.setAdapter(mAdapter);
 
-        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.LEFT | ItemTouchHelper.DOWN | ItemTouchHelper.RIGHT | ItemTouchHelper.UP, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+      //Get the data
+      initializeData();
+
+      int swipeDirs;
+      if (gridColumnCount > 1){
+        swipeDirs = 0;
+      } else {
+        swipeDirs = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+      }
+      ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback
+              (ItemTouchHelper.LEFT | ItemTouchHelper.DOWN | ItemTouchHelper.RIGHT | ItemTouchHelper.UP, swipeDirs) {
           @Override
           public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
             int from = viewHolder.getAdapterPosition();
@@ -75,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
             mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
           }
         });
-        helper.attachToRecyclerView(mRecyclerView);
+      helper.attachToRecyclerView(mRecyclerView);
+
     }
 
     /**
